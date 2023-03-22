@@ -18,7 +18,7 @@ MongoClient.connect("mongodb://127.0.0.1:27017", {
 .then(client => {
     console.log("Uppkopplad mot databasen");
 
-    const db = client.db("webshop");
+    const db = client.db("camilla-ridesjo");
     app.locals.db = db;
 })
 .catch(err => console.log("err", err))
@@ -31,8 +31,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-//app.use('/products', productsRouter);
+app.use('/api/users', usersRouter);
+//app.use('/api/products', productsRouter);
 
 app.get('/rooten', function(req, res) {
     res.send('i rooten');

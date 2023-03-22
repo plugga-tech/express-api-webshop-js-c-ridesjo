@@ -24,7 +24,7 @@ let users = [
   )
 }); */
 
-router.get('/', function(req, res) {
+router.get('/api/', function(req, res) {
   req.app.locals.db.collection("webshop").find().toArray()    //Ska det vara webshop????
   .then(result => {
     console.log(result);
@@ -44,7 +44,7 @@ router.get('/', function(req, res) {
 
 
 /* Hämta specifik användare - hela objektet */
-router.get('/:userId', function(req, res) {
+router.get('/api/:userId', function(req, res) {
   userId = req.params.userId;
   console.log(userId);
 
@@ -83,7 +83,7 @@ router.get('/:userId', function(req, res) {
   })
 }); */
 
-router.post('/add', function(req, res) {
+router.post('/api/add', function(req, res) {
   let newUser = { name: req.body.name };
   let passwordSave = crypto.SHA3(req.body.password).toString();
   newUser.password = passwordSave
@@ -98,7 +98,7 @@ router.post('/add', function(req, res) {
 });
 
 /* Logga in användare */
-router.post('/login', function(req, res) {
+router.post('/api/login', function(req, res) {
   const { name, password } = req.body;
   fs.readFile("users.json", function(err, data){
     if(err) {
@@ -116,7 +116,7 @@ router.post('/login', function(req, res) {
   })
 });
 
-router.get('/test', function(req, res) {
+router.get('/api/test', function(req, res) {
   res.send('testrouter');
 });
 
