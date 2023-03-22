@@ -10,6 +10,18 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+const MongoClient = require("mongodb").MongoClient;
+
+MongoClient.connect("mongodb://127.0.0.1:27017", {
+    useUnifiedTopology: true
+})
+.then(client => {
+    console.log("Uppkopplad mot databasen");
+
+    const db = client.db("users");
+    app.locals.db = db;
+})
+
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
@@ -20,5 +32,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 //app.use('/products', productsRouter);
+
+app.get('/rooten', function(req, res) {
+    res.send('i rooten');
+  });
 
 module.exports = app;

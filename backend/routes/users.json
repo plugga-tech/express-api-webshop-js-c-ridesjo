@@ -1,17 +1,17 @@
 [
     {
-      "id": 1,
-      "name": "Lars",
-      "email": "lars@gmail.com"
+        "id": 1,
+        "name": "Lars Svensson",
+        "email": "lars@gmail.com"
     },
     {
-        "id": 1,
-        "name": "Lina",
+        "id": 2,
+        "name": "Lina Nilsson",
         "email": "lina@gmail.com"
-      },
-      {
-        "id": 1,
-        "name": "Loke",
+    },
+    {
+        "id": 3,
+        "name": "Loke Andersson",
         "email": "loke@gmail.com"
-      }
+    }
 ]
