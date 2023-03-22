@@ -2,11 +2,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const cors = require('cors')
+const cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-//const productsRouter = require('./routes/products');
+const productsRouter = require('./routes/products');
 
 var app = express();
 
@@ -18,9 +18,10 @@ MongoClient.connect("mongodb://127.0.0.1:27017", {
 .then(client => {
     console.log("Uppkopplad mot databasen");
 
-    const db = client.db("users");
+    const db = client.db("webshop");
     app.locals.db = db;
 })
+.catch(err => console.log("err", err))
 
 app.use(cors());
 app.use(logger('dev'));
