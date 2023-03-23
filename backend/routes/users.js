@@ -1,14 +1,14 @@
 var express = require('express');
 var router = express.Router();
-const fs = require("fs");
-const { ObjectId } = require("mongodb");
+//const fs = require("fs");
+//const { ObjectId } = require("mongodb");
 
-let users = [
+/*   let users = [
   {id: 1, name: "Sven Svensson", email: "sven@gmail.com"},
   {id: 1, name: "Stina Svensson", email: "stina@gmail.com"},
   {id: 1, name: "Sara Svensson", email: "sara@gmail.com"},
   {id: 1, name: "Sture Svensson", email: "sture@gmail.com"},
-]
+]  */
 
 /* Hämta alla användare - id, namn, email */
 
@@ -26,34 +26,44 @@ let users = [
 
 router.get('/api/', function(req, res) {
   req.app.locals.db.collection("users").find().toArray()    
-  .then(result => {
-    console.log(result);
+  .then(results => {
+    console.log(results);
 
-/*     let printUsers = "<div><h2>Våra users</h2>"
+    let printUsers = "<div><h2>Våra users</h2>"
 
     for (user in results) {
       printUsers += "<div>" + results[user].name + "</div>"
     }
 
-    printUsers += "</div>" */
+    printUsers += "</div>" 
 
-    res.json(result);
-
+    res.send(printUsers);
+   
   })
+ 
 });
 
 
 /* Hämta specifik användare - hela objektet */
-router.get('/api/:userId', function(req, res) {
-  userId = req.params.userId;
-  console.log(userId);
+router.get('/api/', function(req, res) {
 
-  req.app.locals.db.collection("users").findOne({_id: new ObjectId(userId)})   
+  let findUser = "Camilla";
+/*   userId = req.params.userId;
+  console.log(userId); */
+
+  req.app.locals.db.collection("users").find({"name": findUser}).toArray()   
 
   .then(result => {
     console.log(result);
+    let printUsers = "<div><h2>Våra users</h2>"
 
-    res.json(result);
+    for (user in results) {
+      printUsers += "<div>" + results[user].name + "</div>"
+    }
+
+    printUsers += "</div>" 
+
+    res.send(printUsers);
   })
 
 /*   let findUser = users.find(user => user.id == userId);
@@ -84,16 +94,16 @@ router.get('/api/:userId', function(req, res) {
 }); */
 
 router.post('/api/add', function(req, res) {
-  let newUser = { name: req.body.name };
+/*   let newUser = { name: req.body.name };
   let passwordSave = crypto.SHA3(req.body.password).toString();
   newUser.password = passwordSave
 
-  console.log(newUser);
+  console.log(newUser); */
 
-  req.app.locals.db.collection("users").insertOne(newUser)
+  req.app.locals.db.collection("users").insertOne(req.body)
   .then(result => {
     console.log(result);
-    res.json(result);
+    res.redirect("/show");
   })
 });
 
