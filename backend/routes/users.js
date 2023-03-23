@@ -25,7 +25,7 @@ let users = [
 }); */
 
 router.get('/api/', function(req, res) {
-  req.app.locals.db.collection("webshop").find().toArray()    //Ska det vara webshop????
+  req.app.locals.db.collection("users").find().toArray()    
   .then(result => {
     console.log(result);
 
@@ -48,7 +48,7 @@ router.get('/api/:userId', function(req, res) {
   userId = req.params.userId;
   console.log(userId);
 
-  req.app.locals.db.collection("webshop").findOne({_id: new ObjectId(userId)})    //Ska det vara webshop????
+  req.app.locals.db.collection("users").findOne({_id: new ObjectId(userId)})   
 
   .then(result => {
     console.log(result);
@@ -90,7 +90,7 @@ router.post('/api/add', function(req, res) {
 
   console.log(newUser);
 
-  req.app.locals.db.collection("webshop").insertOne(newUser)
+  req.app.locals.db.collection("users").insertOne(newUser)
   .then(result => {
     console.log(result);
     res.json(result);
@@ -116,7 +116,7 @@ router.post('/api/login', function(req, res) {
   })
 });
 
-router.get('/api/test', function(req, res) {
+router.get('/test', function(req, res) {
   res.send('testrouter');
 });
 
