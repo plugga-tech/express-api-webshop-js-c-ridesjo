@@ -3,6 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
+const mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -39,5 +40,19 @@ app.use('/api/users', usersRouter);
 app.get('/rooten', function(req, res) {
     res.send('i rooten');
   });
+
+app.use((req, res, next) => {
+    const error = new Error('Something went wrong!');
+    error.status = 404;
+    next(error);
+});
+
+app.use((error, req, res, next) => {
+	res.status(error.status || 500).json({
+		error: {
+			message: error.message
+		}
+	});
+});
 
 module.exports = app;
