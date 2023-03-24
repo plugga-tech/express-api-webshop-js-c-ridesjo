@@ -12,6 +12,12 @@ const ordersRouter = require('./routes/orders');
 
 var app = express();
 
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
+app.use('/img', express.static('img'));
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 const MongoClient = require("mongodb").MongoClient;
 
 MongoClient.connect("mongodb://127.0.0.1:27017", {
@@ -34,12 +40,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
-//app.use('/api/products', productsRouter);
-//app.use('/api/orders', ordersRouter);
+app.use('/api/products', productsRouter);
+app.use('/api/orders', ordersRouter);
 
 app.get('/rooten', function(req, res) {
     res.send('i rooten');
   });
+
+app.use((req, res, next) => {
+  res.header('Acess-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+    return res.status(200).json({});
+  }
+  next();
+});
 
 app.use((req, res, next) => {
     const error = new Error('Something went wrong!');
