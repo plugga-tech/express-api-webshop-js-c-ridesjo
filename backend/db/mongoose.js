@@ -1,4 +1,4 @@
- const { connect } = require('mongoose');
+/*  const { connect } = require('mongoose');
 (async () => {
 	try {
 		await connect(process.env.MONGODB_URL, {
@@ -10,4 +10,4 @@
 	} catch (error) {
 		console.log('Error', error);
 	}
-})(); 
+})();  */

@@ -32,7 +32,7 @@ app.use((req, res, next) => {       //Handling CORS
 	next();
 });
 
-const MongoClient = require("mongodb").MongoClient;
+const MongoClient = require("mongodb").MongoClient;   //Denna i stället för mongoose.js
 
 MongoClient.connect("mongodb://127.0.0.1:27017", {
     useUnifiedTopology: true
