@@ -61,7 +61,7 @@ exports.createOrder = (req, res, next) => {
 					},
 					request: {
 						type: 'GET',
-						url: 'http://localhost:4000/orders/' + result._id
+						url: 'http://localhost:3000/orders/' + result._id
 					}
 				});
 			});
@@ -89,7 +89,7 @@ exports.getOrder = (req, res, next) => {
 				request: {
 					type: 'GET',
 					description: 'VIEW_ALL_ORDERS',
-					url: 'http://localhost:4000/orders'
+					url: 'http://localhost:3000/orders'
 				}
 			});
 		})
@@ -110,7 +110,7 @@ exports.deleteOrder = (req, res, next) => {
 				request: {
 					type: 'POST',
 					description: 'POST A NEW PRODUCT',
-					url: 'http://localhost:4000/orders',
+					url: 'http://localhost:3000/orders',
 					body: { productId: 'ID', quantity: 'Number' }
 				}
 			});

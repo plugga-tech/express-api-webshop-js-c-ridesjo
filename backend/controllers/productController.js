@@ -97,3 +97,50 @@ exports.getProduct = (req, res, next) => {
 			res.status(500).json({ error: err });
 		});
 };
+
+exports.updateProduct = (req, res, next) => {
+	const id = req.params.productID;
+	const updateOperations = {};
+	for (const operations of req.body) {
+		updateOperations[operations.propName] = operations.value;
+	}
+	Product.update({ _id: id }, { $set: updateOperations })
+		.exec()
+		.then((results) => {
+			console.log(results);
+			res.status(200).json({
+				message: 'Product Updated Successfully',
+				request: {
+					type: 'GET',
+					url: 'http://localhost:3000/products/' + id
+				}
+			});
+		})
+		.catch((err) => {
+			console.log(err);
+			res.status(500).json({ error: err });
+		});
+};
+
+exports.deleteProduct = (req, res, next) => {
+	const id = req.params.productID;
+	//Delete a single product
+	Product.remove({ _id: id })
+		.exec()
+		.then((result) => {
+			console.log(result);
+			res.status(200).json({
+				message: 'Deleted Successfully',
+				request: {
+					type: 'POST',
+					description: 'POST_A_NEW_PRODUCT',
+					url: 'http://localhost:3000/products',
+					body: { name: 'String', price: 'Number' }
+				}
+			});
+		})
+		.catch((err) => {
+			console.log(err);
+			res.status(500).json({ error: err });
+		});
+};

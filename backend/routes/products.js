@@ -6,11 +6,31 @@ const productController = require('./../controllers/productController');
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, './uploads');
+		cb(null, './img');
 	},
 	filename: (req, file, cb) => {
 		cb(null, new Date().toISOString() + file.originalname);
 	}
+});
+
+const fileFilter = (req, file, cb) => {
+	if (
+		file.mimetype === 'image/jpeg' ||
+		file.mimetype === 'image/jpg' ||
+		file.mimetype === 'png'
+	) {
+		cb(null, true);
+	} else {
+		cb(null, false);
+	}
+};
+const upload = multer({
+	storage: storage,
+	limits: {
+		//fileSize of 5MB only
+		fileSize: 1024 * 1024 * 5
+	},
+	fileFilter: fileFilter
 });
 
 /* Hämta alla produkter */
@@ -23,7 +43,7 @@ router.post(
 );
 router.get('/:productID', productController.getProduct);
 router.patch('/:productID', authCheck, productController.updateProduct);
-router.delete('/:productID', authCheck, productController.deleteProduct);
+router.delete('/:productID', authCheck, productController.deleteProduct); 
 
 module.exports = router;
 

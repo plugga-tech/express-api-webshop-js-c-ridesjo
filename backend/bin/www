@@ -4,10 +4,12 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+const { url } = require('inspector');
+const { app } = require('../app');
 var debug = require('debug')('backend:server');
 var http = require('http');
-require('./api/db/mongoose');         // vara med ????
+require('../db/mongoose');         // vara med ????
+require('dotenv').config({ path: 'config.env' });
 
 /**
  * Get port from environment and store in Express.
@@ -34,7 +36,7 @@ server.on('listening', onListening);
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort(val) {
+/* function normalizePort(val) {
   var port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -48,7 +50,7 @@ function normalizePort(val) {
   }
 
   return false;
-}
+}uri */
 
 /**
  * Event listener for HTTP server "error" event.
