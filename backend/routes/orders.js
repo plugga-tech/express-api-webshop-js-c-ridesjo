@@ -10,7 +10,4 @@ router.get('/:orderID', authCheck, orderController.getOrder);
 router.delete('/:orderID', authCheck, orderController.deleteOrder);
 
 module.exports = router;
-
-/* Skapa en order för en specifik användare - products är en array motsvarande innehållet i kundvagn */
  
-/* Hämta alla orders */

@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const Product = require('../models/productModel');
 
+/* Hämta alla produkter */
 exports.getAllProducts = (req, res, next) => {
-	//Getting all the products
 	Product.find()
-		.select('name price _id productImage')
+		.select('name price _id productImage description stock')
 		.exec()
 		.then((docs) => {
 			if (docs.length > 0) {
@@ -17,6 +17,8 @@ exports.getAllProducts = (req, res, next) => {
 							price: doc.price,
 							productImage: doc.productImage,
 							_id: doc._id,
+							description: doc.description,
+							stock: doc.stock,
 							request: {
 								type: 'GET',
 								url: 'http://localhost:3000/api/products' + doc._id
@@ -37,9 +39,9 @@ exports.getAllProducts = (req, res, next) => {
 		});
 };
 
+/* Skapa en produkt */
 exports.createProduct = (req, res, next) => {
 	console.log(req.file);
-	//create a new product
 	const newProduct = new Product({
 		_id: new mongoose.Types.ObjectId(),
 		name: req.body.name,
@@ -57,6 +59,8 @@ exports.createProduct = (req, res, next) => {
 					price: result.price,
 					productImage: result.productImage,
 					_id: result._id,
+					description: result.description,
+					stock: result.stock,
 					request: {
 						type: 'GET',
 						url: 'http://localhost:3000/api/products/add' + result._id
@@ -70,11 +74,11 @@ exports.createProduct = (req, res, next) => {
 		});
 };
 
+/* Hämta en specifik produkt */
 exports.getProduct = (req, res, next) => {
 	const id = req.params.productID;
-	//Get a single product
 	Product.findById(id)
-		.select('name price _id productImage')
+		.select('name price _id productImage description stock')
 		.exec()
 		.then((doc) => {
 			if (!doc) {
@@ -112,7 +116,7 @@ exports.updateProduct = (req, res, next) => {
 				message: 'Product Updated Successfully',
 				request: {
 					type: 'GET',
-					url: 'http://localhost:3000/products/' + id
+					url: 'http://localhost:3000/api/products/' + id
 				}
 			});
 		})
@@ -122,9 +126,9 @@ exports.updateProduct = (req, res, next) => {
 		});
 };
 
+/* Ta bort en produkt */
 exports.deleteProduct = (req, res, next) => {
 	const id = req.params.productID;
-	//Delete a single product
 	Product.remove({ _id: id })
 		.exec()
 		.then((result) => {
@@ -134,7 +138,7 @@ exports.deleteProduct = (req, res, next) => {
 				request: {
 					type: 'POST',
 					description: 'POST_A_NEW_PRODUCT',
-					url: 'http://localhost:3000/products',
+					url: 'http://localhost:3000/api/products',
 					body: { name: 'String', price: 'Number' }
 				}
 			});

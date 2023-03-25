@@ -3,6 +3,12 @@ const ObjectId = Schema.ObjectId;
 
 const userSchema = new Schema({
 	_id: ObjectId,
+	name: {
+		type: String,
+		required: [true, 'Please enter your name'],
+		unique: true,
+		match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
+	},
 	email: {
 		type: String,
 		required: [true, 'Please provide your email'],

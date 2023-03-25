@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');			//behöver inte kryptera */
 
 const User = require('../models/userModel');
 
+/* Lägg till ny användare */
 exports.signup = (req, res, next) => {
 	User.find({ email: req.body.email })
 		.exec()
@@ -19,6 +20,7 @@ exports.signup = (req, res, next) => {
 					} else {
 						const newUser = new User({
 							_id: new mongoose.Types.ObjectId(),
+							name: req.body.name,
 							email: req.body.email,
 							password: hash
 						});
@@ -37,6 +39,7 @@ exports.signup = (req, res, next) => {
 		});
 };
 
+/* Logga in användare */
 exports.login = (req, res, next) => {
 	User.find({ email: req.body.email })
 		.exec()
@@ -77,6 +80,7 @@ exports.login = (req, res, next) => {
 		});
 };
 
+/* Ta bort en användare */
 exports.deleteUser = (req, res, next) => {
 	User.remove({ _id: req.params.userId })
 		.exec()

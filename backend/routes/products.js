@@ -33,7 +33,6 @@ const upload = multer({
 	fileFilter: fileFilter
 });
 
-/* Hämta alla produkter */
 router.get('/', productController.getAllProducts);
 router.post(
 	'/',
@@ -46,9 +45,3 @@ router.patch('/:productID', authCheck, productController.updateProduct);
 router.delete('/:productID', authCheck, productController.deleteProduct); 
 
 module.exports = router;
-
-/* Hämta en specifik produkt */
-
-
-/* Skapa produkt */
-

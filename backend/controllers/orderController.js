@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 const Order = require('../models/orderModel');
 const Product = require('../models/productModel');
 
+/* Hämta alla orders */
 exports.getAllOrders = (req, res, next) => {
 	Order.find()
-		.select('product quantity _id')
+		.select('quantity _id')
 		.populate('product', 'name')
 		.exec()
 		.then((documets) => {
@@ -19,7 +20,7 @@ exports.getAllOrders = (req, res, next) => {
 					orders: documets.map((doc) => {
 						return {
 							quantity: doc.quantity,
-							product: doc.product,
+							//product: doc.product,
 							_id: doc._id,
 							request: {
 								type: 'GET',
@@ -38,6 +39,7 @@ exports.getAllOrders = (req, res, next) => {
 		});
 };
 
+/* Skapa en order */
 exports.createOrder = (req, res, next) => {
 	Product.findById(req.body.productId)
 		.then((product) => {
@@ -47,7 +49,7 @@ exports.createOrder = (req, res, next) => {
 			const newOrder = new Order({
 				_id: mongoose.Types.ObjectId(),
 				quantity: req.body.quantity,
-				product: req.body.productId
+				//product: req.body.productId
 			});
 			// Saving the new order
 			return newOrder.save().then((result) => {
@@ -56,12 +58,12 @@ exports.createOrder = (req, res, next) => {
 					message: 'Order Stored Successfully',
 					orderCreated: {
 						_id: result._id,
-						product: result.product,
+						//product: result.product,
 						quantity: result.quantity
 					},
 					request: {
 						type: 'GET',
-						url: 'http://localhost:3000/orders/' + result._id
+						url: 'http://localhost:3000/api/orders/' + result._id
 					}
 				});
 			});
@@ -75,7 +77,7 @@ exports.createOrder = (req, res, next) => {
 exports.getOrder = (req, res, next) => {
 	const orderId = req.params.orderID;
 	Order.findById(orderId)
-		.select('_id quantity product')
+		.select('_id quantity')
 		.populate('product', '_id name price')
 		.exec()
 		.then((doc) => {
@@ -89,7 +91,7 @@ exports.getOrder = (req, res, next) => {
 				request: {
 					type: 'GET',
 					description: 'VIEW_ALL_ORDERS',
-					url: 'http://localhost:3000/orders'
+					url: 'http://localhost:3000/api/orders/all'
 				}
 			});
 		})
@@ -110,7 +112,7 @@ exports.deleteOrder = (req, res, next) => {
 				request: {
 					type: 'POST',
 					description: 'POST A NEW PRODUCT',
-					url: 'http://localhost:3000/orders',
+					url: 'http://localhost:3000/api/orders',
 					body: { productId: 'ID', quantity: 'Number' }
 				}
 			});
