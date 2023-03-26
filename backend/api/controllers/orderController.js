@@ -1,10 +1,8 @@
-const mongoose = require('mongoose');
-
 const Order = require('../models/orderModel');
 const Product = require('../models/productModel');
 
 /* Hämta alla orders */
-exports.getAllOrders = (req, res, next) => {
+exports.getAllOrders = (req, res) => {
 	Order.find()
 		.select('quantity _id')
 		.populate('product', 'name')
@@ -19,8 +17,7 @@ exports.getAllOrders = (req, res, next) => {
 					count: documets.length,
 					orders: documets.map((doc) => {
 						return {
-							quantity: doc.quantity,
-							//product: doc.product,
+							quantity: doc.quantity,							
 							_id: doc._id,
 							request: {
 								type: 'GET',
@@ -40,7 +37,7 @@ exports.getAllOrders = (req, res, next) => {
 };
 
 /* Skapa en order */
-exports.createOrder = (req, res, next) => {
+exports.createOrder = (req, res) => {
 	Product.findById(req.body.productId)
 		.then((product) => {
 			if (!product) {
@@ -48,17 +45,15 @@ exports.createOrder = (req, res, next) => {
 			}
 			const newOrder = new Order({
 				_id: mongoose.Types.ObjectId(),
-				quantity: req.body.quantity,
-				//product: req.body.productId
+				quantity: req.body.quantity,				
 			});
-			// Saving the new order
-			return newOrder.save().then((result) => {
+			
+			return newOrder.save().then((result) => {		// Sparar ordern
 				console.log(result);
 				res.status(201).json({
 					message: 'Order Stored Successfully',
 					orderCreated: {
-						_id: result._id,
-						//product: result.product,
+						_id: result._id,						
 						quantity: result.quantity
 					},
 					request: {
@@ -74,7 +69,7 @@ exports.createOrder = (req, res, next) => {
 		});
 };
 
-exports.getOrder = (req, res, next) => {
+exports.getOrder = (req, res) => {
 	const orderId = req.params.orderID;
 	Order.findById(orderId)
 		.select('_id quantity')

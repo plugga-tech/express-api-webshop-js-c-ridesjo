@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 const Product = require('../models/productModel');
 
 /* Hämta alla produkter */
-exports.getAllProducts = (req, res, next) => {
+exports.getAllProducts = (req, res) => {
 	Product.find()
 		.select('name price _id productImage description stock')
 		.exec()
 		.then((docs) => {
 			if (docs.length > 0) {
-				/* console.log(docs); */
+				// console.log(docs);
 				const queryResult = {
 					count: docs.length,
 					products: docs.map((doc) => {
@@ -40,7 +40,7 @@ exports.getAllProducts = (req, res, next) => {
 };
 
 /* Skapa en produkt */
-exports.createProduct = (req, res, next) => {
+exports.createProduct = (req, res) => {
 	console.log(req.file);
 	const newProduct = new Product({
 		_id: new mongoose.Types.ObjectId(),
@@ -62,7 +62,7 @@ exports.createProduct = (req, res, next) => {
 					description: result.description,
 					stock: result.stock,
 					request: {
-						type: 'GET',
+						type: 'POST',
 						url: 'http://localhost:3000/api/products/add' + result._id
 					}
 				}
@@ -75,7 +75,7 @@ exports.createProduct = (req, res, next) => {
 };
 
 /* Hämta en specifik produkt */
-exports.getProduct = (req, res, next) => {
+exports.getProduct = (req, res) => {
 	const id = req.params.productID;
 	Product.findById(id)
 		.select('name price _id productImage description stock')
@@ -102,7 +102,7 @@ exports.getProduct = (req, res, next) => {
 		});
 };
 
-exports.updateProduct = (req, res, next) => {
+exports.updateProduct = (req, res) => {
 	const id = req.params.productID;
 	const updateOperations = {};
 	for (const operations of req.body) {
@@ -127,7 +127,7 @@ exports.updateProduct = (req, res, next) => {
 };
 
 /* Ta bort en produkt */
-exports.deleteProduct = (req, res, next) => {
+exports.deleteProduct = (req, res) => {
 	const id = req.params.productID;
 	Product.remove({ _id: id })
 		.exec()

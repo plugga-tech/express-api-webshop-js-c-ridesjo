@@ -6,10 +6,11 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require ('body-parser');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-const productsRouter = require('./routes/products');
-const ordersRouter = require('./routes/orders');
+var indexRouter = require('./api/routes/index');
+var usersRouter = require('./api/routes/users');
+const productsRouter = require('./api/routes/products');
+const ordersRouter = require('./api/routes/orders');
+require('dotenv').config();
 
 var app = express();
 
@@ -32,9 +33,9 @@ app.use((req, res, next) => {       //Handling CORS
 	next();
 });
 
-const MongoClient = require("mongodb").MongoClient;   //Denna i stället för mongoose.js
+ const MongoClient = require("mongodb").MongoClient;  
 
-MongoClient.connect("mongodb://127.0.0.1:27017", {
+MongoClient.connect("mongodb://127.0.0.1:27017/api", {
     useUnifiedTopology: true
 })
 .then(client => {
@@ -44,7 +45,7 @@ MongoClient.connect("mongodb://127.0.0.1:27017", {
     app.locals.db = db;
 })
 .catch(err => console.log("err", err))
-
+ 
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
@@ -56,10 +57,22 @@ app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/orders', ordersRouter);
-/* 
-app.get('/rooten', function(req, res) {
+ 
+ app.get('/rooten', function(req, res) {
     res.send('i rooten');
-  }); */
+  }); 
+
+app.get('/api/users', function(req, res) {
+	res.send('Användare');
+	});  
+
+/*   app.get('/api/products', function(req, res) {
+	res.send('Varor');
+	}); 
+
+app.get('/api/orders', function(req, res) {
+	res.send('Order');
+	});  */
 
 app.use((req, res, next) => {
     const error = new Error('Something went wrong!');
@@ -67,7 +80,7 @@ app.use((req, res, next) => {
     next(error);
 });
 
-app.use((error, req, res, next) => {
+app.use((error, req, res) => {
 	res.status(error.status || 500).json({
 		error: {
 			message: error.message

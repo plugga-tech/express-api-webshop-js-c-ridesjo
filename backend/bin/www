@@ -7,8 +7,7 @@
 const { url } = require('inspector');
 const { app } = require('../app');
 var debug = require('debug')('backend:server');
-var http = require('http');
-require('../db/mongoose');         // vara med ????
+var http = require('http');     
 require('dotenv').config({ path: 'config.env' });
 
 /**
