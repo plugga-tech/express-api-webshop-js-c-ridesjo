@@ -20,7 +20,7 @@ app.use('/img', express.static('img'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {       //Handling CORS
+app.use((req, res, next) => {       // CORS-hantering
 	res.header('Acess-Control-Allow-Origin', '*');
 	res.header(
 		'Access-Control-Allow-Headers',
@@ -58,21 +58,9 @@ app.use('/api/users', usersRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/orders', ordersRouter);
  
- app.get('/rooten', function(req, res) {
-    res.send('i rooten');
-  }); 
-
 app.get('/api/users', function(req, res) {
 	res.send('Användare');
 	});  
-
-/*   app.get('/api/products', function(req, res) {
-	res.send('Varor');
-	}); 
-
-app.get('/api/orders', function(req, res) {
-	res.send('Order');
-	});  */
 
 app.use((req, res, next) => {
     const error = new Error('Something went wrong!');
