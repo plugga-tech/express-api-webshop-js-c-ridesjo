@@ -68,55 +68,36 @@ async function getOne(req, res, next) {
 }; */
 
 /* Logga in användare */
-/* exports.login = (req, res, next) => {
-	User.find({ email: req.body.email })
-		.exec()
-		.then((user) => {
-			if (user.length < 1) {
-				return res.status(401).json({ message: 'Auth Failed' });
+async function login (req, res, next) {
+	try {
+		let user = await userService.getUserByEmail(req.body.email);
+
+		if (user != null) {
+			const decryptedPassword = CryptoJS.AES.decrypt(user.password, salt).toString(CryptoJS.enc.Utf8);
+			if (decryptedPassword == req.body.password) {
+				res.json({message: 'success', id: user._id});
+				return;
 			}
-			bcrypt.compare(req.body.password, user[0].password, (err, result) => {
-				if (err) {
-					return res.status(401).json({
-						message: 'Auth Failed'
-					});
-				}
+		}
+		res.status(401);
+		res.json({message: 'Email or password was incorrect'});		
+	} catch (err) {
+		console.error(`Error while updating user`, err.message);
+		next(err);
+	}
+}
 
-				if (result) {
-					const token = jwt.sign(
-						{
-							email: user[0].email,
-							userId: user[0]._id
-						},
-						process.env.JWT_KEY,
-						{
-							expiresIn: '1h'
-						}
-					);
-					return res.status(200).json({
-						message: 'Auth Successful',
-						token: token
-					});
-				}
-				res.status(401).json({
-					message: 'Auth Failed'
-				});
-			});
-		})
-		.catch((err) => {
-			res.status(500).json({ error: err });
-		});
-}; */
 
-/* Ta bort en användare *//* 
-exports.deleteUser = (req, res, next) => {
-	User.remove({ _id: req.params.userId })
-		.exec()
-		.then((result) => {
-			res.status(200).json({ message: 'User deleted' });
-		})
-		.catch((err) => {
-			res.status(500).json({ error: err });
-		});
+
+
+/* Ta bort en användare */
+async function remove (req, res, next) {
+	try {
+		await userService.remove(req.params.id);
+		res.json({message: 'success'});
+	} catch (err) {
+		console.error(`Error while deleting user`, err.message);
+		next(err);
+	}
 };
- */
+ 
