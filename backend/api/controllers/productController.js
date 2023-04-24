@@ -1,150 +1,71 @@
-const mongoose = require('mongoose');
-const Product = require('../models/productModel');
+const productService = require("../services/productService");
+//const categoryService = require("../services/categoryService");
+//const authorisationService = require("../services/authCheck");
+const { convertToProductResponse, convertToProductsResponse } = require("../mappers/productModel");
+const { ObjectId } = require("mongodb");
 
-/* Hämta alla produkter */
-exports.getAllProducts = (req, res) => {
-	Product.find()
-		.select('name price _id productImage description stock')
-		.exec()
-		.then((docs) => {
-			if (docs.length > 0) {
-				// console.log(docs);
-				const queryResult = {
-					count: docs.length,
-					products: docs.map((doc) => {
-						return {
-							name: doc.name,
-							price: doc.price,
-							productImage: doc.productImage,
-							_id: doc._id,
-							description: doc.description,
-							stock: doc.stock,
-							request: {
-								type: 'GET',
-								url: 'http://localhost:3000/api/products' + doc._id
-							}
-						};
-					})
-				};
-				res.status(200).json(queryResult);
-			} else {
-				res
-					.status(404)
-					.json({ message: 'No Product Available in the Collection' });
-			}
-		})
-		.catch((err) => {
-			console.log(err);
-			res.status(500).json({ error: err });
-		});
-};
-
-/* Skapa en produkt */
-exports.createProduct = (req, res) => {
-	console.log(req.file);
-	const newProduct = new Product({
-		_id: new mongoose.Types.ObjectId(),
-		name: req.body.name,
-		price: req.body.price,
-		productImage: req.file.path
-	});
-	newProduct
-		.save()
-		.then((result) => {
-			console.log(result);
-			res.status(201).json({
-				message: 'Product Created Successfully',
-				productCreated: {
-					name: result.name,
-					price: result.price,
-					productImage: result.productImage,
-					_id: result._id,
-					description: result.description,
-					stock: result.stock,
-					request: {
-						type: 'POST',
-						url: 'http://localhost:3000/api/products/add' + result._id
-					}
-				}
-			});
-		})
-		.catch((err) => {
-			console.log(err);
-			res.status(500).json({ error: err });
-		});
-};
-
-/* Hämta en specifik produkt */
-exports.getProduct = (req, res) => {
-	const id = req.params.productID;
-	Product.findById(id)
-		.select('name price _id productImage description stock')
-		.exec()
-		.then((doc) => {
-			if (!doc) {
-				res.status(404).json({
-					message: 'No valid entry found for the product ID'
-				});
-			}
-			console.log(`From database`, doc);
-			res.status(200).json({
-				product: doc,
-				request: {
-					type: 'GET',
-					description: 'GET_ALL_THE_PRODUCTS',
-					url: 'http://localhost:3000/api/products/'
-				}
-			});
-		})
-		.catch((err) => {
-			console.log(err);
-			res.status(500).json({ error: err });
-		});
-};
-
-exports.updateProduct = (req, res) => {
-	const id = req.params.productID;
-	const updateOperations = {};
-	for (const operations of req.body) {
-		updateOperations[operations.propName] = operations.value;
+async function getAll(req, res, next) {
+	try {
+		let products = await productService.getAll();
+		convertToProductsResponse(products);
+		res.json(products);
+	} catch (err) {
+		console.error(`Error while getting products`, err.message);
+		next(err);
 	}
-	Product.update({ _id: id }, { $set: updateOperations })
-		.exec()
-		.then((results) => {
-			console.log(results);
-			res.status(200).json({
-				message: 'Product Updated Successfully',
-				request: {
-					type: 'GET',
-					url: 'http://localhost:3000/api/products/' + id
-				}
-			});
-		})
-		.catch((err) => {
-			console.log(err);
-			res.status(500).json({ error: err });
-		});
-};
+}
 
-/* Ta bort en produkt */
-exports.deleteProduct = (req, res) => {
-	const id = req.params.productID;
-	Product.remove({ _id: id })
-		.exec()
-		.then((result) => {
-			console.log(result);
-			res.status(200).json({
-				message: 'Deleted Successfully',
-				request: {
-					type: 'POST',
-					description: 'POST_A_NEW_PRODUCT',
-					url: 'http://localhost:3000/api/products',
-					body: { name: 'String', price: 'Number' }
-				}
-			});
-		})
-		.catch((err) => {
-			console.log(err);
-			res.status(500).json({ error: err });
-		});
+async function getOne(req, res, next) {
+	try {
+		let product = await productService.getOne(req.params.id);
+		if (product != null) {
+			convertToProductResponse(product);
+			res.json(product);
+		} else {
+			res.status(404);
+			res.json({ message: "Product not found" });
+		}
+	} catch (err) {
+		console.error(`Error while getting product`, err.message);
+		next(err);
+	}
+}
+
+async function create(req, res, next) {
+	try {
+/* 		if (!authorisationService.isValid(req.body.token)) {
+			res.status(401);
+			res.json({ message: "Invalid token" });
+			return;
+		} */
+
+/* 		let category = await categoryService.getSingle(req.body.category);
+		if (category == null) {
+			res.status(400);
+			res.json({ message: "category not found" });
+			return;
+		} */
+
+		let newProduct = {
+			name: req.body.name,
+			description: req.body.description,
+			price: req.body.price,
+			stock: req.body.lager,
+		//	category: new ObjectId(req.body.category),
+		};
+
+		let result = await productService.create(newProduct);
+		res.status(201);
+		res.json({ message: "Success", id: result.insertedId });
+
+	} catch (err) {
+		console.error(`Error while creating product`, err.message);
+		next(err);
+	}
+}
+
+module.exports = {
+	getAll,
+	getOne,
+	create
 };

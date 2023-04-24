@@ -1,7 +1,10 @@
 const userService = require('../services/userService');
 const authCheck = require('../services/authCheck');
-const userModel = require('../models/userModel');
+//const CryptoJS = require("crypto-js");
+//const salt = process.env.SALT;
+//const { v4: uuidv4 } = require('uuid');
 
+/* Hämta alla användare */
 async function getAll(req, res, next) {
 	try {
 		let users = await userService.getAll();
@@ -13,6 +16,7 @@ async function getAll(req, res, next) {
 	}
 }
 
+/* Hämta en användare */
 async function getOne(req, res, next) {
 	try {
 		let user = await userService.getOne(req.body.id);
@@ -21,7 +25,7 @@ async function getOne(req, res, next) {
 			res.json(user);
 		} else {
 			res.status(404);
-			res.json({ message: "user not found" });
+			res.json({ message: "User not found" });
 		}
 	} catch (err) {
 		console.error(`Error while getting user`, err.message);
@@ -29,43 +33,36 @@ async function getOne(req, res, next) {
 	}
 }
 
+/* Skapa en ny användare */
+async function create(req, res, next) {
+	try {
+		if (req.body.name == '' || req.body.email == '' || req.body.password == ''
+		|| req.body.name == null || req.body.email == null || req.body.password == null) {
+			res.status(400);
+			res.json({ message: "All fields must be filled." });
+			return;
+		}
 
+		let newUser = {
+			name: req.body.name,
+			email: req.body.email,
+			password: CryptoJS.AES.encrypt(req.body.password, salt).toString()
+		};
 
+		let result = await userService.create(newUser);
 
-/* Lägg till ny användare */
-/* exports.signup = (req, res, next) => {
-	User.find({ email: req.body.email })
-		.exec()
-		.then((user) => {
-			if (user.length >= 1) {
-				return res.status(409).json({
-					message: 'User with the Email Already Exist.'
-				});
-			} else {
-				bcrypt.hash(req.body.password, 10, (err, hash) => {
-					if (err) {
-						return res.status(500).json({ error: err });
-					} else {
-						const newUser = new User({
-							_id: new mongoose.Types.ObjectId(),
-							name: req.body.name,
-							email: req.body.email,
-							password: hash
-						});
-						newUser
-							.save()
-							.then((result) => {
-								console.log(result);
-								res.status(201).json(result);
-							})
-							.catch((err) => {
-								res.status(500).json({ error: err });
-							});
-					}
-				});
-			}
-		});
-}; */
+		if (result != null) {
+			res.status(201);
+			res.json({ message: "Success", id: result.insertedId });
+		} else {
+			res.status(400);
+			res.json({ message: "User with that email already exists" });
+		}
+	} catch (err) {
+		console.error(`Error while creating user`, err.message);
+		next(err);
+	}
+}
 
 /* Logga in användare */
 async function login (req, res, next) {
@@ -75,23 +72,20 @@ async function login (req, res, next) {
 		if (user != null) {
 			const decryptedPassword = CryptoJS.AES.decrypt(user.password, salt).toString(CryptoJS.enc.Utf8);
 			if (decryptedPassword == req.body.password) {
-				res.json({message: 'success', id: user._id});
+				res.json({message: 'Success', id: user._id});
 				return;
 			}
 		}
 		res.status(401);
-		res.json({message: 'Email or password was incorrect'});		
+		res.json({message: 'Email or password is incorrect'});		
 	} catch (err) {
 		console.error(`Error while updating user`, err.message);
 		next(err);
 	}
 }
 
-
-
-
-/* Ta bort en användare */
-async function remove (req, res, next) {
+/* Ta bort en användare */								// Behöver inte vara med
+/* async function remove (req, res, next) {
 	try {
 		await userService.remove(req.params.id);
 		res.json({message: 'success'});
@@ -99,5 +93,11 @@ async function remove (req, res, next) {
 		console.error(`Error while deleting user`, err.message);
 		next(err);
 	}
-};
+}; */
  
+module.exports = {
+	getAll,
+	getOne,
+	create,
+	login
+};
