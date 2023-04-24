@@ -1,7 +1,7 @@
 const productService = require("../services/productService");
 //const categoryService = require("../services/categoryService");
 //const authorisationService = require("../services/authCheck");
-const { convertToProductResponse, convertToProductsResponse } = require("../mappers/productModel");
+//const { convertToProductResponse, convertToProductsResponse } = require("../mappers/productModel");
 const { ObjectId } = require("mongodb");
 
 async function getAll(req, res, next) {

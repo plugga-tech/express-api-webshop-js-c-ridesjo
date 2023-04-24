@@ -37,8 +37,10 @@ app.use((err, req, res, next) => {
   next();
 });
 
-mongoDbService.init().then(() => {
+/* mongoDbService.init().then(() => {
   app.listen(port, '0.0.0.0', () => {
     console.log(`Example app listening at http://localhost:${port}`)
   });
 });
+
+ */

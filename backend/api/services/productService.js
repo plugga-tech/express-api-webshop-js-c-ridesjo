@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-const mongo = require('./mongoService');
+const mongo = require('./mongoDbService');
 
 const collection = () => mongo.connection.collection('products');
 

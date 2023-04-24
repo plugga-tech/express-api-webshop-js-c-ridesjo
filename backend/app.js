@@ -1,13 +1,13 @@
-/* var express = require('express');
+var express = require('express');					// Min gamla kod
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
-const mongoose = require('mongoose');
+/* const mongoose = require('mongoose'); */
 const bodyParser = require ('body-parser');
 
-var indexRouter = require('./api/routes/index');
-var usersRouter = require('./api/routes/users');
+/* var indexRouter = require('./api/routes/index');
+var usersRouter = require('./api/routes/users'); */
 const productsRouter = require('./api/routes/products');
 const ordersRouter = require('./api/routes/orders');
 require('dotenv').config();
@@ -53,8 +53,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/api/users', usersRouter);
+/* app.use('/', indexRouter);
+app.use('/api/users', usersRouter); */
 app.use('/api/products', productsRouter);
 app.use('/api/orders', ordersRouter);
  
@@ -77,4 +77,3 @@ app.use((error, req, res) => {
 });
 
 module.exports = { app };
- */
