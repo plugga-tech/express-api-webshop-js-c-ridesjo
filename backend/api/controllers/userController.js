@@ -1,11 +1,39 @@
-const mongoose = require('mongoose');
-/* const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');			//behöver inte kryptera */
+const userService = require('../services/userService');
+const authCheck = require('../services/authCheck');
+const userModel = require('../models/userModel');
 
-const User = require('../models/userModel');
+async function getAll(req, res, next) {
+	try {
+		let users = await userService.getAll();
+		userModel(users);
+		res.json(users);
+	} catch (err) {
+		console.error(`Error while getting users`, err.message);
+		next(err);
+	}
+}
+
+async function getOne(req, res, next) {
+	try {
+		let user = await userService.getOne(req.body.id);
+		if (user != null) {
+			userModel(user);
+			res.json(user);
+		} else {
+			res.status(404);
+			res.json({ message: "user not found" });
+		}
+	} catch (err) {
+		console.error(`Error while getting user`, err.message);
+		next(err);
+	}
+}
+
+
+
 
 /* Lägg till ny användare */
-exports.signup = (req, res, next) => {
+/* exports.signup = (req, res, next) => {
 	User.find({ email: req.body.email })
 		.exec()
 		.then((user) => {
@@ -37,10 +65,10 @@ exports.signup = (req, res, next) => {
 				});
 			}
 		});
-};
+}; */
 
 /* Logga in användare */
-exports.login = (req, res, next) => {
+/* exports.login = (req, res, next) => {
 	User.find({ email: req.body.email })
 		.exec()
 		.then((user) => {
@@ -78,9 +106,9 @@ exports.login = (req, res, next) => {
 		.catch((err) => {
 			res.status(500).json({ error: err });
 		});
-};
+}; */
 
-/* Ta bort en användare */
+/* Ta bort en användare *//* 
 exports.deleteUser = (req, res, next) => {
 	User.remove({ _id: req.params.userId })
 		.exec()
@@ -91,4 +119,4 @@ exports.deleteUser = (req, res, next) => {
 			res.status(500).json({ error: err });
 		});
 };
-
+ */
