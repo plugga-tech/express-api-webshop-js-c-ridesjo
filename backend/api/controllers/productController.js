@@ -4,6 +4,7 @@ const productService = require("../services/productService");
 //const { convertToProductResponse, convertToProductsResponse } = require("../mappers/productModel");
 const { ObjectId } = require("mongodb");
 
+/* Hämta alla produkter */
 async function getAll(req, res, next) {
 	try {
 		let products = await productService.getAll();
@@ -15,6 +16,7 @@ async function getAll(req, res, next) {
 	}
 }
 
+/* Hämta en produkt */
 async function getOne(req, res, next) {
 	try {
 		let product = await productService.getOne(req.params.id);
@@ -31,6 +33,7 @@ async function getOne(req, res, next) {
 	}
 }
 
+/* Lägg till produkt */
 async function create(req, res, next) {
 	try {
 /* 		if (!authorisationService.isValid(req.body.token)) {

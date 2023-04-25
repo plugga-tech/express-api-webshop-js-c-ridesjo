@@ -4,6 +4,7 @@ const productService = require("../services/productService");
 //const authorisationService = require("../services/authorisationService");
 //const { mapToDbOrder, convertToOrdersResponse } = require("../models/orderModel");
 
+/* Hämta alla ordrar */
 async function getAll(req, res, next) {
 	try {
 /* 		if (!authorisationService.isValid(req.params.token)) {
@@ -21,6 +22,7 @@ async function getAll(req, res, next) {
 	}
 }
 
+/* Skapa order */
 async function create(req, res, next) {
 	try {
 		let user = await userService.getOne(req.body.user);
