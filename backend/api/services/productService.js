@@ -1,7 +1,8 @@
 const { ObjectId } = require('mongodb');
-const mongo = require('./mongoDbService');
+const MongoClient = require('mongodb').MongoClient;
+require('dotenv').config();
 
-const collection = () => mongo.connection.collection('products');
+const collection = () => MongoClient.connection.collection('products'); 
 
 async function getAll() {
     return await collection().find({ 'isDeleted': false }, { projection: { isDeleted: 0 } }).toArray();

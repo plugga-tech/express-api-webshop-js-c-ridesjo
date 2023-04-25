@@ -1,7 +1,7 @@
-const MongoClient = require('mongodb').MongoClient;
+/*const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
 
-let connection = null; 
+ let connection = null; 
 
 async function init() {
     let conn = await MongoClient.connect(process.env.MONGODB_URI, {
@@ -14,4 +14,6 @@ async function init() {
 module.exports = {
     connection,
     init
-}
+} */
+
+

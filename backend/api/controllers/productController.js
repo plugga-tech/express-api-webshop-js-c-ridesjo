@@ -1,7 +1,7 @@
 const productService = require("../services/productService");
 //const categoryService = require("../services/categoryService");
-//const authorisationService = require("../services/authCheck");
-//const { convertToProductResponse, convertToProductsResponse } = require("../mappers/productModel");
+const authService = require("../services/authService");
+const { convertToProductResponse, convertToProductsResponse } = require("../mappers/productMapper");
 const { ObjectId } = require("mongodb");
 
 /* Hämta alla produkter */
@@ -36,25 +36,16 @@ async function getOne(req, res, next) {
 /* Lägg till produkt */
 async function create(req, res, next) {
 	try {
-/* 		if (!authorisationService.isValid(req.body.token)) {
+		if (!authService.isValid(req.body.token)) {
 			res.status(401);
-			res.json({ message: "Invalid token" });
+			res.json({ message: "invalid token" });
 			return;
-		} */
-
-/* 		let category = await categoryService.getSingle(req.body.category);
-		if (category == null) {
-			res.status(400);
-			res.json({ message: "category not found" });
-			return;
-		} */
-
+		}
 		let newProduct = {
 			name: req.body.name,
 			description: req.body.description,
 			price: req.body.price,
-			stock: req.body.lager,
-		//	category: new ObjectId(req.body.category),
+			lager: req.body.lager,
 		};
 
 		let result = await productService.create(newProduct);

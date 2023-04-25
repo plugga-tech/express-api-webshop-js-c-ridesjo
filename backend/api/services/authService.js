@@ -1,4 +1,4 @@
-/* const tokens = [process.env.ADMIN_KEY];
+const tokens = [process.env.ADMIN_KEY];
 
 // function addToken(token) {
 // 	tokens.push(token);
@@ -11,4 +11,4 @@ function isValid(token) {
 module.exports = {
 	// addToken,
 	isValid
-} */
+}

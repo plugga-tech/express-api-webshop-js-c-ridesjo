@@ -1,7 +1,8 @@
 const { ObjectId } = require('mongodb');
-const mongo = require('./mongoDbService');
+const MongoClient = require('mongodb').MongoClient;
+require('dotenv').config();
 
-const collection = () => mongo.connection.collection('orders');
+const collection = () => MongoClient.connection.collection('orders'); 
 
 async function getAll() {
     return await collection().find({ 'isDeleted': false }, { projection: { isDeleted: 0 } }).toArray();
@@ -12,12 +13,12 @@ async function create(order) {
 	return await collection().insertOne(order);
 }
 
-/* async function getByUser(userId) {                   Behövs??
+ async function getByUser(userId) {                 
     return await collection().find({ 'user': new ObjectId(userId), 'isDeleted': false }, { projection: { isDeleted: 0 } }).toArray();
 }
- */
+ 
 module.exports = {
     getAll,
-    create
-	//getByUser
+    create,
+	getByUser
 }
