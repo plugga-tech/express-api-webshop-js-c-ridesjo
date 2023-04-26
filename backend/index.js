@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 3000;
 const cors = require('cors');
-//const mongoDbService = require('./api/services/mongoDbService');
 const userRouter = require('./api/routes/userRoute');
 const productRouter = require('./api/routes/productRoute');
 const orderRouter = require('./api/routes/orderRoute');
@@ -38,12 +37,6 @@ app.listen(3000, function() {
 app.get('/', function(req, res) {
 	res.send('<h1>Hello från Express!</h1>');
 });
-
-/*  mongoDbService.init().then(() => {
-  app.listen(port, '0.0.0.0', () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-  });
-}); */
 
 const MongoClient = require("mongodb").MongoClient;  
 require('dotenv').config();

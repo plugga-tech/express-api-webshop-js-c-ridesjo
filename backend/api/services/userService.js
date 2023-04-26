@@ -21,8 +21,8 @@ async function create(req, user) {
 	return null;
 }
 
- async function getUserByEmail(email) {           
-    return await collection().findOne({ 'email': email, 'isDeleted': false });
+ async function getUserByEmail(req, email) {           
+    return await req.app.locals.db.collection('users').findOne({ 'email': email, 'isDeleted': false });
 } 
 
 module.exports = {

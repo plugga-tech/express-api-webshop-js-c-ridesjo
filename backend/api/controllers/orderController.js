@@ -1,17 +1,11 @@
 const orderService = require("../services/orderService");
 const userService = require("../services/userService");
 const productService = require("../services/productService");
-const authService = require("../services/authService");
 const { mapToDbOrder, convertToOrdersResponse } = require("../mappers/orderMapper");
 
 /* Hämta alla ordrar */
 async function getAll(req, res, next) {
 	try {
-/* 		if (!authorisationService.isValid(req.params.token)) {
-			res.status(401);
-			res.json({ message: "invalid token" });
-			return;
-		} */
 
 		let orders = await orderService.getAll(req);
 		convertToOrdersResponse(orders);

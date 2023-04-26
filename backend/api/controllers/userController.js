@@ -1,8 +1,8 @@
 const userService = require('../services/userService');
-const authService = require('../services/authService');
+//const authService = require('../services/authService');
 const CryptoJS = require("crypto-js");
 const salt = process.env.SALT;
-const { v4: uuidv4 } = require('uuid');
+//const { v4: uuidv4 } = require('uuid');
 const { convertToUserResponse, convertToUsersResponse } = require("../mappers/userMapper");
 
 /* Hämta alla användare */
@@ -37,13 +37,6 @@ async function getOne(req, res, next) {
 /* Skapa en ny användare */
 async function create(req, res, next) {
 	try {
-	/* 	if (req.body.name == '' || req.body.email == '' || req.body.password == ''
-		|| req.body.name == null || req.body.email == null || req.body.password == null) {
-			res.status(400);
-			res.json({ message: "All fields must be filled." });
-			return;
-		} */
-	
 		let newUser = {
 			name: req.body.name,
 			email: req.body.email,
@@ -74,7 +67,7 @@ async function login (req, res, next) {
 			const decryptedPassword = CryptoJS.AES.decrypt(user.password, salt).toString(CryptoJS.enc.Utf8);
 			if (decryptedPassword == req.body.password) {
 				//const token = uuidv4();
-				//authorisationService.addToken(token);
+				//authService.addToken(token);
 				res.json({message: 'Success', id: user._id});
 				return;
 			}
