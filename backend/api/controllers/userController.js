@@ -8,7 +8,7 @@ const { convertToUserResponse, convertToUsersResponse } = require("../mappers/us
 /* Hämta alla användare */
 async function getAll(req, res, next) {
 	try {
-		let users = await userService.getAll();
+		let users = await userService.getAll(req);
 		convertToUsersResponse(users);
 		res.json(users);
 	} catch (err) {
@@ -20,7 +20,7 @@ async function getAll(req, res, next) {
 /* Hämta en användare */
 async function getOne(req, res, next) {
 	try {
-		let user = await userService.getOne(req.body.id);
+		let user = await userService.getOne(req);
 		if (user != null) {
 			convertToUserResponse(user);
 			res.json(user);
@@ -37,20 +37,20 @@ async function getOne(req, res, next) {
 /* Skapa en ny användare */
 async function create(req, res, next) {
 	try {
-		if (req.body.name == '' || req.body.email == '' || req.body.password == ''
+	/* 	if (req.body.name == '' || req.body.email == '' || req.body.password == ''
 		|| req.body.name == null || req.body.email == null || req.body.password == null) {
 			res.status(400);
 			res.json({ message: "All fields must be filled." });
 			return;
-		}
-
+		} */
+	
 		let newUser = {
 			name: req.body.name,
 			email: req.body.email,
-			password: CryptoJS.AES.encrypt(req.body.password, salt).toString()
+			password: req.body.password
 		};
-
-		let result = await userService.create(newUser);
+		
+		let result = await userService.create(req, newUser);
 
 		if (result != null) {
 			res.status(201);

@@ -4,30 +4,30 @@ require('dotenv').config();
 
 const collection = () => MongoClient.connection.collection('users'); 
 
-async function getAll() {
-    return await collection().find({ 'isDeleted': false }, { projection: { isDeleted: 0 } }).toArray();
+async function getAll(req) {
+    return await req.app.locals.db.collection('users').find({ 'isDeleted': false }, { projection: { isDeleted: 0 } }).toArray();
 }
 
-async function getOne(id) {
-    return await collection().findOne({ '_id': new ObjectId(id), 'isDeleted': false }, { projection: { isDeleted: 0 } });
+async function getOne(req) {
+    return await req.app.locals.db.collection('users').findOne({ '_id': new ObjectId(req.body.id), 'isDeleted': false }, { projection: { isDeleted: 0 } });
 }
 
-async function create(user) {
-	const existingUser = await getUserByEmail(user.email);
-	if (existingUser == null) {
+async function create(req, user) {
+	//const existingUser = await getUserByEmail(user.email);
+	//if (existingUser == null) {
 		user.isDeleted = false;
-		return await collection().insertOne(user);
-	}
+		return await req.app.locals.db.collection('users').insertOne(user);
+	//}
 	return null;
 }
 
-async function getUserByEmail(email) {           
+/* async function getUserByEmail(email) {           
     return await collection().findOne({ 'email': email, 'isDeleted': false });
-}
+} */
 
 module.exports = {
     getAll,
     getOne,
-    create,
-    getUserByEmail         
+    create
+   // getUserByEmail         
 }
