@@ -35,8 +35,8 @@ POST http://localhost:3000/api/users/login
 Content-Type: application/json
 
 {
-  "email": "// EN USER EMAIL",
-  "password": "// EN USER EMAIL"
+  "email": "test@mail.com",
+  "password": "test"
 }
 
 ###
@@ -53,7 +53,7 @@ GET http://localhost:3000/api/products
 ###
 
 // HÄMTA SPECIFIK PRODUKT
-GET http://localhost:3000/api/products/641c6155b373803216adb461
+GET http://localhost:3000/api/products/644986be183005dff580a112
 
 ###
 
@@ -62,10 +62,10 @@ POST http://localhost:3000/api/products/add
 Content-Type: application/json
 
 {
-  "name": "Produkt 1",
-  "description": "Beskrivning av produkt 1",
-  "price": 100, 
-  "lager": 10
+  "name": "Jacket",
+  "description": "Blue, leather",
+  "price": 850, 
+  "lager": 2
 }
 
 ###
@@ -79,14 +79,14 @@ POST http://localhost:3000/api/orders/add
 Content-Type: application/json
 
 {
-  "user": "// USER ID",
+  "user": "64490fb200cfe4a2da478f99",
       "products": [
     {
-      "productId": "// ID PÅ EN PRODUKT",
+      "productId": "6449829de6c15c2386df484c",
       "quantity": 1
     },
     {
-      "productId": "// ID PÅ EN PRODUKT",
+      "productId": "644986be183005dff580a112",
       "quantity": 2
     }
   ]

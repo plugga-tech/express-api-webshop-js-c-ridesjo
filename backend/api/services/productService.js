@@ -4,17 +4,17 @@ require('dotenv').config();
 
 const collection = () => MongoClient.connection.collection('products'); 
 
-async function getAll() {
-    return await collection().find({ 'isDeleted': false }, { projection: { isDeleted: 0 } }).toArray();
+async function getAll(req) {
+    return await req.app.locals.db.collection('products').find({ 'isDeleted': false }, { projection: { isDeleted: 0 } }).toArray();
 }
 
-async function getOne(id) {
-    return await collection().findOne({ '_id': new ObjectId(id), 'isDeleted': false }, { projection: { isDeleted: 0 } });
+async function getOne(req) {
+    return await req.app.locals.db.collection('products').findOne({ '_id': new ObjectId(req.body.id), 'isDeleted': false }, { projection: { isDeleted: 0 } });
 }
 
-async function create(product) {
+async function create(req, product) {
 	product.isDeleted = false;
-	return await collection().insertOne(product);
+	return await req.app.locals.db.collection('products').insertOne(product);
 }
 
 async function changeQuantity(productId, quantity) {

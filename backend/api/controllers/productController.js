@@ -7,7 +7,7 @@ const { ObjectId } = require("mongodb");
 /* Hämta alla produkter */
 async function getAll(req, res, next) {
 	try {
-		let products = await productService.getAll();
+		let products = await productService.getAll(req);
 		convertToProductsResponse(products);
 		res.json(products);
 	} catch (err) {
@@ -19,7 +19,7 @@ async function getAll(req, res, next) {
 /* Hämta en produkt */
 async function getOne(req, res, next) {
 	try {
-		let product = await productService.getOne(req.params.id);
+		let product = await productService.getOne(req);
 		if (product != null) {
 			convertToProductResponse(product);
 			res.json(product);
@@ -48,7 +48,7 @@ async function create(req, res, next) {
 			lager: req.body.lager,
 		};
 
-		let result = await productService.create(newProduct);
+		let result = await productService.create(req, newProduct);
 		res.status(201);
 		res.json({ message: "Success", id: result.insertedId });
 
