@@ -21,13 +21,13 @@ async function create(req, user) {
 	return null;
 }
 
-/* async function getUserByEmail(email) {           
+ async function getUserByEmail(email) {           
     return await collection().findOne({ 'email': email, 'isDeleted': false });
-} */
+} 
 
 module.exports = {
     getAll,
     getOne,
-    create
-   // getUserByEmail         
+    create,
+    getUserByEmail         
 }

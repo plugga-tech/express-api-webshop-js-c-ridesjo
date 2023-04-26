@@ -1,6 +1,6 @@
 const productService = require("../services/productService");
 //const categoryService = require("../services/categoryService");
-const authService = require("../services/authService");
+//const authService = require("../services/authService");
 const { convertToProductResponse, convertToProductsResponse } = require("../mappers/productMapper");
 const { ObjectId } = require("mongodb");
 
@@ -36,11 +36,11 @@ async function getOne(req, res, next) {
 /* Lägg till produkt */
 async function create(req, res, next) {
 	try {
-		if (!authService.isValid(req.body.token)) {
+/* 		if (!authService.isValid(req.body.token)) {
 			res.status(401);
 			res.json({ message: "invalid token" });
 			return;
-		}
+		} */
 		let newProduct = {
 			name: req.body.name,
 			description: req.body.description,

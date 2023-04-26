@@ -7,13 +7,13 @@ const { mapToDbOrder, convertToOrdersResponse } = require("../mappers/orderMappe
 /* Hämta alla ordrar */
 async function getAll(req, res, next) {
 	try {
-		if (!authorisationService.isValid(req.params.token)) {
+/* 		if (!authorisationService.isValid(req.params.token)) {
 			res.status(401);
 			res.json({ message: "invalid token" });
 			return;
-		}
+		} */
 
-		let orders = await orderService.getAll();
+		let orders = await orderService.getAll(req);
 		convertToOrdersResponse(orders);
 		res.json(orders);
 	} catch (err) {
@@ -47,7 +47,7 @@ async function create(req, res, next) {
 			let test = await productService.changeOnHand(product.productId, product.quantity);
 		}
 
-		let result = await orderService.create(newOrder);
+		let result = await orderService.create(req, newOrder);
 		res.status(201);
 		res.json({ message: "Success", id: result.insertedId });
 
@@ -57,7 +57,7 @@ async function create(req, res, next) {
 	}
 }
 
-async function getByUser(req, res, next) {
+/* async function getByUser(req, res, next) {
 	try {
 		if (!authService.isValid(req.body.token)) {
 			res.status(401);
@@ -72,10 +72,10 @@ async function getByUser(req, res, next) {
 		console.error(`Error while getting orders`, err.message);
 		next(err);
 	}
-}
+} */
 
 module.exports = {
 	getAll,
-	create,
-	getByUser
+	create
+	//getByUser
 };
