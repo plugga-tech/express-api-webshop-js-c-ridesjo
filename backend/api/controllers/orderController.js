@@ -18,27 +18,28 @@ async function getAll(req, res, next) {
 
 /* Skapa order */
 async function create(req, res, next) {
+
 	try {
-		let user = await userService.getOne(req.body.user);
+		let user = await userService.getOneUserForOrder(req);
 		if (user == null) {
 			res.status(400);
 			res.json({ message: "User not found" });
 			return;
 		}
-
+	
 		for (const reqProduct of req.body.products) {
-			let product = await productService.getOne(reqProduct.productId);
+			let product = await productService.getOne(req, reqProduct.productId);
 			if (product == null) {
 				res.status(400);
 				res.json({ message: `Product: ${reqProduct.productId} not found` });
 				return;
 			}
 		}
-
+		console.log(req.body);
 		let newOrder = mapToDbOrder(req.body);
 
 		for (const product of newOrder.products) {
-			let test = await productService.changeOnHand(product.productId, product.quantity);
+			await productService.changeQuantity(req, product);
 		}
 
 		let result = await orderService.create(req, newOrder);

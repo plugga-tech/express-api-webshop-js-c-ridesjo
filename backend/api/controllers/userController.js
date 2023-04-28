@@ -1,8 +1,8 @@
 const userService = require('../services/userService');
 //const authService = require('../services/authService');
 const CryptoJS = require("crypto-js");
-//const salt = process.env.SALT;
-//const { v4: uuidv4 } = require('uuid');
+const salt = process.env.SALT;
+const { v4: uuidv4 } = require('uuid');
 const { convertToUserResponse, convertToUsersResponse } = require("../mappers/userMapper");
 
 /* Hämta alla användare */
@@ -61,11 +61,11 @@ async function create(req, res, next) {
 /* Logga in användare */
 async function login (req, res, next) {
 	try {
-		let user = await userService.getUserByEmail(req.body.email);
+		let user = await userService.getUserByEmail(req);
 
 		if (user != null) {
 			const decryptedPassword = CryptoJS.AES.decrypt(user.password, salt).toString(CryptoJS.enc.Utf8);
-			if (decryptedPassword == req.body.password) {
+ 			if (decryptedPassword == req.body.password) {
 				//const token = uuidv4();
 				//authService.addToken(token);
 				res.json({message: 'Success', id: user._id});

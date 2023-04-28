@@ -23,9 +23,9 @@ POST http://localhost:3000/api/users/add
 Content-Type: application/json
 
 {
-  "name": "Per Svensson",
-  "email": "per@mail.com",
-  "password": "per"
+  "name": "Ulla Svensson",
+  "email": "ulla@mail.com",
+  "password": "ulla"
 }
 
 ###
@@ -35,8 +35,8 @@ POST http://localhost:3000/api/users/login
 Content-Type: application/json
 
 {
-  "email": "test@mail.com",
-  "password": "test"
+  "email": "per@mail.com",
+  "password": "per"
 }
 
 ###
@@ -53,7 +53,7 @@ GET http://localhost:3000/api/products
 ###
 
 // HÄMTA SPECIFIK PRODUKT
-GET http://localhost:3000/api/products/644986c8183005dff580a113
+GET http://localhost:3000/api/products/644bbdb71aac3418e71dbcb1
 
 ###
 
@@ -62,10 +62,10 @@ POST http://localhost:3000/api/products/add
 Content-Type: application/json
 
 {
-  "name": "Jacket",
-  "description": "Blue, leather",
-  "price": 850, 
-  "lager": 2
+  "name": "Skirt",
+  "description": "Orange, cotton",
+  "price": 375, 
+  "lager": 3
 }
 
 ###
@@ -79,15 +79,15 @@ POST http://localhost:3000/api/orders/add
 Content-Type: application/json
 
 {
-  "user": "64490fb200cfe4a2da478f99",
+  "user": "644bb045ed386a2b9c42689e",
       "products": [
     {
-      "productId": "6449829de6c15c2386df484c",
+      "productId": "644986d1183005dff580a114",
       "quantity": 1
     },
     {
-      "productId": "644986be183005dff580a112",
-      "quantity": 2
+      "productId": "6449a27b37cd8580289ec5dd",
+      "quantity": 4
     }
   ]
 }

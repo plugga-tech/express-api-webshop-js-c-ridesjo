@@ -12,6 +12,10 @@ async function getOne(req) {
     return await req.app.locals.db.collection('users').findOne({ '_id': new ObjectId(req.body.id), 'isDeleted': false }, { projection: { isDeleted: 0 } });
 }
 
+async function getOneUserForOrder(req) {
+    return await req.app.locals.db.collection('users').findOne({ '_id': new ObjectId(req.body.user), 'isDeleted': false }, { projection: { isDeleted: 0 } });
+}
+
 async function create(req, user) {
 	//const existingUser = await getUserByEmail(user.email);
 	//if (existingUser == null) {
@@ -28,6 +32,7 @@ async function create(req, user) {
 module.exports = {
     getAll,
     getOne,
+    getOneUserForOrder,
     create,
     getUserByEmail         
 }
