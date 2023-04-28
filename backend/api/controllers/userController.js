@@ -62,18 +62,16 @@ async function create(req, res, next) {
 async function login (req, res, next) {
 	try {
 		let user = await userService.getUserByEmail(req);
-
-		if (user != null) {
-			const decryptedPassword = CryptoJS.AES.decrypt(user.password, salt).toString(CryptoJS.enc.Utf8);
- 			if (decryptedPassword == req.body.password) {
+		console.log(user);
+		if (user && user.password == req.body.password) {
+			//const decryptedPassword = CryptoJS.AES.decrypt(user.password, salt).toString(CryptoJS.enc.Utf8);
+	
 				//const token = uuidv4();
 				//authService.addToken(token);
-				res.json({message: 'Success', id: user._id});
-				return;
-			}
+				res.json({message: 'Success', id: user._id});				
+			
 		}
-		res.status(401);
-		res.json({message: 'Email or password is incorrect'});		
+		res.status(401).json({message: 'Email or password is incorrect'});		
 	} catch (err) {
 		console.error(`Error while updating user`, err.message);
 		next(err);
