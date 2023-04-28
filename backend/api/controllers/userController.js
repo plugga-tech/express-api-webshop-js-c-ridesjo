@@ -1,7 +1,7 @@
 const userService = require('../services/userService');
 //const authService = require('../services/authService');
 const CryptoJS = require("crypto-js");
-const salt = process.env.SALT;
+//const salt = process.env.SALT;
 //const { v4: uuidv4 } = require('uuid');
 const { convertToUserResponse, convertToUsersResponse } = require("../mappers/userMapper");
 
