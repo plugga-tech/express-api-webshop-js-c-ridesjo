@@ -28,7 +28,7 @@ async function create(req, res, next) {
 		}
 	
 		for (const reqProduct of req.body.products) {
-			let product = await productService.getOne(req, reqProduct.productId);
+			let product = await productService.getOneProductForOrder(req, reqProduct.productId);
 			if (product == null) {
 				res.status(400);
 				res.json({ message: `Product: ${reqProduct.productId} not found` });

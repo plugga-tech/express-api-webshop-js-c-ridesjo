@@ -23,9 +23,9 @@ POST http://localhost:3000/api/users/add
 Content-Type: application/json
 
 {
-  "name": "Ulla Svensson",
-  "email": "ulla@mail.com",
-  "password": "ulla"
+  "name": "Stina Svensson",
+  "email": "stina@mail.com",
+  "password": "stina"
 }
 
 ###
@@ -35,8 +35,8 @@ POST http://localhost:3000/api/users/login
 Content-Type: application/json
 
 {
-  "email": "per@mail.com",
-  "password": "per"
+  "email": "stina@mail.com",
+  "password": "stina"
 }
 
 ###
@@ -62,10 +62,10 @@ POST http://localhost:3000/api/products/add
 Content-Type: application/json
 
 {
-  "name": "Skirt",
-  "description": "Orange, cotton",
-  "price": 375, 
-  "lager": 3
+  "name": "Pants",
+  "description": "Black, cotton",
+  "price": 495, 
+  "lager": 2
 }
 
 ###
@@ -79,14 +79,14 @@ POST http://localhost:3000/api/orders/add
 Content-Type: application/json
 
 {
-  "user": "644bb045ed386a2b9c42689e",
+  "user": "6449922bb637eeeb7777ffab",
       "products": [
     {
-      "productId": "644986d1183005dff580a114",
+      "productId": "6449a28a37cd8580289ec5de",
       "quantity": 1
     },
     {
-      "productId": "6449a27b37cd8580289ec5dd",
+      "productId": "644986d1183005dff580a114",
       "quantity": 4
     }
   ]
