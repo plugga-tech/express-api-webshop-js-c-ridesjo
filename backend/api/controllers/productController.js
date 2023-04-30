@@ -1,12 +1,12 @@
 const productService = require("../services/productService");
-const { convertToProductResponse, convertToProductsResponse } = require("../mappers/productMapper");
+const { changeToProdResponse, changeToProductsResponse } = require("../models/productModel");
 const { ObjectId } = require("mongodb");
 
 /* Hämta alla produkter */
 async function getAll(req, res, next) {
 	try {
 		let products = await productService.getAll(req);
-		convertToProductsResponse(products);
+		changeToProductsResponse(products);
 		res.json(products);
 	} catch (err) {
 		console.error(`Error while getting products`, err.message);
@@ -19,7 +19,7 @@ async function getOne(req, res, next) {
 	try {
 		let product = await productService.getOne(req);
 		if (product != null) {
-			convertToProductResponse(product);
+			changeToProdResponse(product);
 			res.json(product);
 		} else {
 			res.status(404);

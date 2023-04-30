@@ -1,8 +1,5 @@
 const { ObjectId } = require('mongodb');
-const MongoClient = require('mongodb').MongoClient;
 require('dotenv').config();
-
-//const collection = () => MongoClient.connection.collection('users'); 
 
 async function getAll(req) {
     return await req.app.locals.db.collection('users').find({ 'isDeleted': false }, { projection: { isDeleted: 0 } }).toArray();
@@ -17,12 +14,8 @@ async function getOneUserForOrder(req) {
 }
 
 async function create(req, user) {
-	//const existingUser = await getUserByEmail(user.email);
-	//if (existingUser == null) {
-		user.isDeleted = false;
+	user.isDeleted = false;
 		return await req.app.locals.db.collection('users').insertOne(user);
-	//}
-	return null;
 }
 
  async function getUserByEmail(req) {           

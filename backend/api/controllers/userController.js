@@ -1,15 +1,11 @@
 const userService = require('../services/userService');
-//const authService = require('../services/authService');
-const CryptoJS = require("crypto-js");
-const salt = process.env.SALT;
-const { v4: uuidv4 } = require('uuid');
-const { convertToUserResponse, convertToUsersResponse } = require("../mappers/userMapper");
+const { changeToUserResponse, changeToUsersResponse } = require("../models/userModel");
 
 /* Hämta alla användare */
 async function getAll(req, res, next) {
 	try {
 		let users = await userService.getAll(req);
-		convertToUsersResponse(users);
+		changeToUsersResponse(users);
 		res.json(users);
 	} catch (err) {
 		console.error(`Error while getting users`, err.message);
@@ -22,7 +18,7 @@ async function getOne(req, res, next) {
 	try {
 		let user = await userService.getOne(req);
 		if (user != null) {
-			convertToUserResponse(user);
+			changeToUserResponse(user);
 			res.json(user);
 		} else {
 			res.status(404);
@@ -64,11 +60,7 @@ async function login (req, res, next) {
 		let user = await userService.getUserByEmail(req);
 		console.log(user);
 		if (user && user.password == req.body.password) {
-			//const decryptedPassword = CryptoJS.AES.decrypt(user.password, salt).toString(CryptoJS.enc.Utf8);
-	
-				//const token = uuidv4();
-				//authService.addToken(token);
-				res.json({message: 'Success', id: user._id});				
+			res.json({message: 'Success', id: user._id});				
 			
 		} else {
 			res.status(401).json({message: 'Email or password is incorrect'});

@@ -13,7 +13,7 @@ POST http://localhost:3000/api/users/
 Content-Type: application/json
 
 {
-  "id":"64497bf4e3b5c3e8ac79add5"
+  "id":"644e95f11f7f1bceb85e878e"
 }
 
 ###
@@ -23,9 +23,9 @@ POST http://localhost:3000/api/users/add
 Content-Type: application/json
 
 {
-  "name": "Stina Svensson",
-  "email": "stina@mail.com",
-  "password": "stina"
+  "name": "Karin Larsson",
+  "email": "karin@mail.com",
+  "password": "karin"
 }
 
 ###
@@ -35,8 +35,8 @@ POST http://localhost:3000/api/users/login
 Content-Type: application/json
 
 {
-  "email": "stina@mail.com",
-  "password": "stina"
+  "email": "karin@mail.com",
+  "password": "karin"
 }
 
 ###
@@ -53,7 +53,7 @@ GET http://localhost:3000/api/products
 ###
 
 // HÄMTA SPECIFIK PRODUKT
-GET http://localhost:3000/api/products/644986c8183005dff580a113
+GET http://localhost:3000/api/products/644e93490c91384458f07ce1
 
 ###
 
@@ -62,10 +62,10 @@ POST http://localhost:3000/api/products/add
 Content-Type: application/json
 
 {
-  "name": "Pants",
+  "name": "Hat",
   "description": "Black, cotton",
   "price": 495, 
-  "lager": 2
+  "lager": 1
 }
 
 ###
@@ -79,15 +79,15 @@ POST http://localhost:3000/api/orders/add
 Content-Type: application/json
 
 {
-  "user": "6449922bb637eeeb7777ffab",
+  "user": "644e82ea58fd68d16c77775b",
       "products": [
     {
-      "productId": "6449a28a37cd8580289ec5de",
+      "productId": "644e93490c91384458f07ce1",
       "quantity": 1
     },
     {
-      "productId": "644986d1183005dff580a114",
-      "quantity": 4
+      "productId": "644e96001f7f1bceb85e878f",
+      "quantity": 1
     }
   ]
 }

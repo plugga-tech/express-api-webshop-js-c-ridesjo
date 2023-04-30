@@ -1,13 +1,13 @@
 const { ObjectId } = require('mongodb');
 
-function convertToOrderResponse(order) {
+function changeToOrderResponse(order) {
 	order.id = order._id;
 	delete order._id;
 }
 
-function convertToOrdersResponse(orders) {
+function changeToOrdersResponse(orders) {
     for(let order of orders) {
-		convertToOrderResponse(order);
+		changeToOrderResponse(order);
     }
 }
 
@@ -28,7 +28,7 @@ function mapToDbOrderProduct(orderProductRequest) {
 }
 
 module.exports = {
-	convertToOrderResponse,
-	convertToOrdersResponse,
+	changeToOrderResponse,
+	changeToOrdersResponse,
 	mapToDbOrder
 };

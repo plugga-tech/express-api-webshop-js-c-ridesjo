@@ -6,7 +6,5 @@ router.get('/all', orderController.getAll);
 
 router.post('/add', orderController.create);
 
-//router.post('/user', orderController.getByUser);
-
 module.exports = router;
  
