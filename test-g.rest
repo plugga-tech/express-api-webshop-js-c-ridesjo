@@ -82,11 +82,11 @@ Content-Type: application/json
   "user": "644e82ea58fd68d16c77775b",
       "products": [
     {
-      "productId": "644e93490c91384458f07ce1",
+      "productId": "644e9f6c105650f029d8f7e5",
       "quantity": 1
     },
     {
-      "productId": "644e96001f7f1bceb85e878f",
+      "productId": "644e9ed9b319602bd92fa670",
       "quantity": 1
     }
   ]

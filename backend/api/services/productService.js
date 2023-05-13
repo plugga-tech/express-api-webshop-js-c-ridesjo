@@ -24,10 +24,26 @@ async function changeQuantity(req, product) {
 	return await req.app.locals.db.collection('products').updateOne({ '_id': new ObjectId(product.id) }, { $inc: { lager: -product.quantity } });
 }
 
+async function reduceQuantity(productId, quantity, req) {
+    try {
+      const productCollection = req.app.locals.db.collection('products');
+  
+      await productCollection.updateOne(
+        { _id: new ObjectId(productId) },
+        { $inc: { lager: -quantity } }
+      );
+  
+      console.log(`Stock reduced for product ${productId}. Reduced quantity: ${quantity}`);
+    } catch (err) {
+      console.error('Error reducing stock:', err);
+    }
+  }
+
 module.exports = {
     getAll,
     getOne,
     getOneProductForOrder,
     create,
-	changeQuantity
+	changeQuantity, 
+    reduceQuantity
 }

@@ -19,6 +19,14 @@ async function getAll(req, res, next) {
 /* Skapa order */
 async function create(req, res, next) {
 
+	let newOrder = mapToDbOrder(req.body);
+
+	for (const product of newOrder.products) {
+		await productService.changeQuantity(req, product);
+
+  		await productService.reduceQuantity(product.productId, product.quantity, req);
+}
+
 	try {
 		let user = await userService.getOneUserForOrder(req);
 		if (user == null) {
